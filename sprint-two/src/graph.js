@@ -17,12 +17,16 @@ Graph.prototype.contains = function(node) {
 
 // Removes a node from the graph.
 Graph.prototype.removeNode = function(nodeToDelete) {
+
+  var self = this;
   // for every edge belonging to nodeToDelete, remove nodeToDelete from the outbound edge
   this.collection[nodeToDelete].forEach(function(otherNode) {
-
+    self.collection[otherNode] = self.collection[otherNode].filter(function(node) {
+      return node !== nodeToDelete;
+    }) 
   });
-  
-  delete this.collection[node];
+
+  delete this.collection[nodeToDelete];
 };
 
 // Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
@@ -49,6 +53,7 @@ Graph.prototype.removeEdge = function(fromNode, toNode) {
 
 // Pass in a callback which will be executed on each node of the graph.
 Graph.prototype.forEachNode = function(cb) {
+  Object.keys(this.collection).forEach(cb);
 };
 
 /*
