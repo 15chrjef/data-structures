@@ -52,6 +52,7 @@ describe('hashTable', function() {
     _.each(people, function(person) {
       var firstName = person[0];
       var lastName = person[1];
+      debugger;
       hashTable.insert(firstName, lastName);
       expect(hashTable.retrieve(firstName)).to.equal(lastName);
     });

@@ -13,10 +13,11 @@ HashTable.prototype.reHash = function(newLimit) {
   var oldStorage = this._storage;
   this._storage = LimitedArray(newLimit);
   var self = this;
+  this._count = 0;
   oldStorage.each(function(bucket) {
     if (bucket !== undefined) {
       bucket.forEach(function(tuple) {
-        self.insert(tuple[0], tuple[1]);
+        self.doInsert(tuple[0], tuple[1]);
       });
     }
   });
@@ -31,13 +32,12 @@ HashTable.prototype.resize = function() {
   }
 };
 
-HashTable.prototype.insert = function(k, v) {
+HashTable.prototype.doInsert = function(k, v) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   var bucket = this._storage.get(index);
   if (bucket === undefined) {
     this._storage.set(index, [[k, v]]);
     this._count += 1;
-    this.resize();
   } else {
     // if present, overwrite 
     if (indexOfKey(bucket, k) >= 0) {
@@ -45,9 +45,13 @@ HashTable.prototype.insert = function(k, v) {
     } else {
       bucket.push([k, v]);
       this._count += 1;
-      this.resize();
     }
   }
+};
+
+HashTable.prototype.insert = function(k, v) {
+  this.doInsert(k,v);
+  this.resize();
 };
 
 HashTable.prototype.retrieve = function(k) {
@@ -68,6 +72,7 @@ HashTable.prototype.remove = function(k) {
       return tuple[0] !== k;
     });
     this._storage.set(index, newBucket);
+    this.resize();
   }
 };
 
