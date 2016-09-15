@@ -51,5 +51,23 @@ describe('linkedList', function() {
     expect(linkedList.contains(4)).to.equal(false);
   });
 
+  it('should add a node to the head', function() {
+    linkedList.addToHead(4);
+    expect(linkedList.head.value).to.equal(4);
+    linkedList.addToHead(5);
+    expect(linkedList.head.value).to.equal(5);
+    linkedList.removeTail();
+    expect(linkedList.contains(4)).to.equal(false);
+  });
+
+  it('should set the "previous" pointer of inserted nodes', function () {
+    linkedList.addToHead(4);
+    expect(linkedList.head.previous).to.equal(null);
+    linkedList.addToHead(5);
+    expect(linkedList.tail.previous.value).to.equal(5);
+  });
+
+
+
   // add more tests here to test the functionality of linkedList
 });

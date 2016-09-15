@@ -41,4 +41,16 @@ describe('tree', function() {
     expect(tree.contains(8)).to.equal(true);
   });
 
+  it('should assign the "parent" pointer of new tree nodes', function() {
+    var tree = Tree(3);
+    tree.addChild(7);
+    expect(tree.children[0].parent.value).to.equal(3);
+  });
+
+  it('should remove a parent from a child node, and remove the child form the children array', function() {
+    var tree = Tree(4);
+    tree.addChild(3);
+    tree.removeFromParent(3);
+    expect(tree.children).to.eql([]);
+  });
 });
